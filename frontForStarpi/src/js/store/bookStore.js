@@ -31,7 +31,7 @@ export const getBorrowedBooks = () => {
 export const borrowBook = (get, userId, id) => {
     return dispatch => {
         dispatch({ type: "CLEAR_BOOKS" });
-        dispatch({type: "CLEAR_BORROWED_BOOKS"});
+        dispatch({ type: "CLEAR_BORROWED_BOOKS" });
         dispatch({ type: "BORROW_BOOK" });
 
         if(get == 'borrow'){
@@ -43,8 +43,11 @@ export const borrowBook = (get, userId, id) => {
             }
             return api.post('/user-borrows-books', body)
             .then(res => {
-                    api.put(`/books/${id}`, { available: false })
-                    .then(result => getBorrowedBooks())
+                    api.put(`/books/${id.id}`, { available: false })
+                    .then(result => {
+                        getBooks()
+                        getBorrowedBooks()
+                    })
                     .catch(err => console.log(err))
             })
             .catch(err => console.log(err))
@@ -57,7 +60,10 @@ export const borrowBook = (get, userId, id) => {
             return api.put(`/user-borrows-books/${id.id}`, body)
             .then(res => {
                 api.put(`/books/${id.bookId}`, { available: true })
-                .then(result => getBorrowedBooks())
+                .then(result =>  {
+                    getBooks()
+                    getBorrowedBooks()
+                })
                 .catch(err => console.log(err))
             })
             .catch(err => console.log(err))
@@ -77,7 +83,7 @@ const defaultBorrowedBooks = {
 
 const allBooks = (state = defaultAllBooks, action) => {
     const allBooksAction = {
-        "SET_BOOKS": {...state, isLoading: true, books: action.payload},
+        "SET_BOOKS": { isLoading: true, books: action.payload },
         "CLEAR_BOOKS": defaultAllBooks
     }
     return allBooksAction[action.type] || state;
@@ -85,7 +91,7 @@ const allBooks = (state = defaultAllBooks, action) => {
 
 const borrowedBooks = (state = defaultBorrowedBooks, action) => {
     const borrowedBooksAction = {
-        "SET_BORROWED_BOOKS": {...state, isLoading: true, books: action.payload},
+        "SET_BORROWED_BOOKS": { isLoading: true, books: action.payload },
         "CLEAR_BORROWED_BOOKS": defaultBorrowedBooks
     }
     return borrowedBooksAction[action.type] || state;

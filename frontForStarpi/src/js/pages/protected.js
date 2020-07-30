@@ -25,6 +25,7 @@ const Protected = () => {
                 <h1>All Books Available</h1>
                 { booksLoad && books.map((book, i) => {
                     if(book.available){
+                        console.log(book)
                         return (
                             <div className="book" key={i}>
                                 <h2>{book.name}</h2>
