@@ -1,0 +1,35 @@
+{
+  "kind": "collectionType",
+  "collectionName": "user_borrows_books",
+  "info": {
+    "name": "user_borrows_books"
+  },
+  "options": {
+    "increments": true,
+    "timestamps": true
+  },
+  "attributes": {
+    "borrowDate": {
+      "type": "date",
+      "required": false
+    },
+    "returnDate": {
+      "type": "date"
+    },
+    "book": {
+      "model": "book"
+    },
+    "user": {
+      "plugin": "users-permissions",
+      "model": "user"
+    },
+    "status": {
+      "type": "enumeration",
+      "enum": [
+        "pending",
+        "returned",
+        "overdue"
+      ]
+    }
+  }
+}
