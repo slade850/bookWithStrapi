@@ -25,7 +25,6 @@ const Protected = () => {
                 <h1>All Books Available</h1>
                 { booksLoad && books.map((book, i) => {
                     if(book.available){
-                        console.log(book)
                         return (
                             <div className="book" key={i}>
                                 <h2>{book.name}</h2>
@@ -41,11 +40,13 @@ const Protected = () => {
                 <h1>Borrowed Books</h1>
                 { borrowedBooksLoad && booksBorrowed.map((borrowed, i) => {
                     if(borrowed.user.id === userId && borrowed.status === "pending"){
+                        const date = new Date(borrowed.borrowDate);
+                        date.setDate(date.getDate() + 15);
                         return (
                             <div className="borrowed" key={i}>
                                 <h2>{borrowed.book.name}</h2>
                                 <p>borrowed at: {borrowed.borrowDate}</p>
-                                <p>return befor: { new Date(borrowed.borrowDate).setDate(borrowed.borrowDate.split('-')[2] + 15).toLocaleString('en-GB', { timeZone: 'UTC' })}</p>
+                                <p>return befor: { date.toLocaleString('fr-FR', { timeZone: 'UTC' })}</p>
                                 <button className="actionBtn" onClick={() => dispatch(borrowBook('return', userId, {id: borrowed.id, bookId: borrowed.book.id}))}>Return Book</button>
                             </div>
                         )
